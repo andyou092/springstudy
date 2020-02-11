@@ -1,0 +1,58 @@
+package com.example.study.model.entity;
+
+
+import lombok.*;
+import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity//order_detail
+@ToString(exclude = {"orderGroup","item"})
+@EntityListeners(AuditingEntityListener.class)//AuditingEntityListener이 감시자를 사용 하겠다.
+@Builder//생성자를 원하는데로 생성해준다  //
+@Accessors(chain = true)
+public class OrderDetail {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String status;
+    private LocalDateTime arrivalDate;
+    private Integer quantity;//quantity
+    private BigDecimal totalPrice;
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @CreatedBy
+    private String createdBy;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+    @LastModifiedBy
+    private String updatedBy;
+
+    // OrderDetail N : 1 Item
+    @ManyToOne
+    private Item item;
+  //  private Long orderGroupId;
+
+    //N :1  OrderDetail의 입장에서
+  //  @ManyToOne//연관관게 설정
+  //  private User user;//userId를 알아서 찾아간다 user에서도 만들어 주어야한다.
+    //N : 1
+  //  @ManyToOne
+ //   private Item item;
+
+    @ManyToOne
+    private  OrderGroup orderGroup;
+
+
+}
